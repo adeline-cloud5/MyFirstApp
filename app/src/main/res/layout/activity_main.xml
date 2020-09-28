@@ -1,65 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity">
-
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
-        android:textAlignment="center"
-        app:title="@string/app_name" />
+    android:padding="30dp">
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/edit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
-        android:hint="@string/input"
-        android:layout_margin="20dp"
-        android:textSize="20sp"
-        android:inputMethod="numberDecimal"
-        tools:ignore="Autofill,Deprecated" />
+        android:text=""
+        android:hint="Input RMB"
+        android:textSize="24sp"
+        android:layout_marginBottom="15dp"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        />
+
+    <TextView
+        android:id="@+id/out"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="48sp"
+        android:text="Hello"
+        android:layout_marginBottom="15dp"
+        android:gravity="center"/>
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/dollar_bt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:textSize="20sp"
-        android:text="@string/change" />
+        android:text="Dollar"
+        android:layout_marginBottom="10dp"
+        />
 
-    <TextView
-        android:id="@+id/textView"
+    <Button
+        android:id="@+id/euro_bt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/textview"
-        android:padding="15dp"
-        android:textSize="20sp"
-        android:layout_marginTop="20dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"/>
+        android:text="Euro"
+        android:layout_marginBottom="10dp"/>
 
-    <TextView
-        android:id="@+id/textView2"
+    <Button
+        android:id="@+id/won_bt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/result"
-        android:padding="15dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"/>
+        android:text="Won"
+        android:layout_marginBottom="10dp"/>
 
+    <Button
+        android:id="@+id/config_bt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Config" />
 </LinearLayout>

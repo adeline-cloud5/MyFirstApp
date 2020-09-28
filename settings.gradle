@@ -1,2 +1,6 @@
+include ':layout'
+include ':scoring'
+include ':moveicon'
+include ':mysecondapp'
 include ':app'
 rootProject.name = "MyFirstApp"
