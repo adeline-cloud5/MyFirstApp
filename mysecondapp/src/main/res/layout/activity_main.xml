@@ -1,16 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-
-    android:id="@+id/layout"
-    android:orientation="horizontal"
-    android:rowCount="4"
-    android:columnCount="3"
-
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:orientation="vertical"
+    android:padding="30dp">
 
+    <EditText
+        android:id="@+id/edit2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text=""
+        android:hint="Input RMB"
+        android:textSize="24sp"
+        android:layout_marginBottom="15dp"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        />
 
-</GridLayout>
+    <TextView
+        android:id="@+id/out2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="48sp"
+        android:text="Hello"
+        android:layout_marginBottom="15dp"
+        android:gravity="center"
+        tools:ignore="DuplicateIds" />
+
+    <Button
+        android:id="@+id/dollar_bt2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Dollar"
+        android:layout_marginBottom="10dp"
+        />
+
+    <Button
+        android:id="@+id/euro_bt2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Euro"
+        android:layout_marginBottom="10dp"/>
+
+    <Button
+        android:id="@+id/won_bt2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Won"
+        android:layout_marginBottom="10dp"/>
+
+    <Button
+        android:id="@+id/config_bt2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Config" />
+</LinearLayout>
