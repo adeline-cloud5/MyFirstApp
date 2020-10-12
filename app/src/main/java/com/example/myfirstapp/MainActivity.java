@@ -4,30 +4,26 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private TextView out;
     private EditText edit;
-    private Button dollar,euro,won,config;
+    private Button dollar,euro,won,config,rate;
     private String  d,e,w;
     private Float result;
-    private Float d_exc = 0.15f,e_exc = 0.12f,w_exc = 0.11f;
+    private Float d_exc=0.5f,e_exc=0.15f,w_exc=1.2f;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,72 +37,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         euro = findViewById(R.id.euro_bt);
         won = findViewById(R.id.won_bt);
         config = findViewById(R.id.config_bt);
-
-        /*//获取数据
-        Intent intent = getIntent();
-        Bundle bundle = intent.getExtras();
-        d_exc = bundle.getFloat("dollar_rate");
-        e_exc = bundle.getFloat("euro_rate");
-        w_exc = bundle.getFloat("won_rate");*/
+        rate = findViewById(R.id.rate_bt);
 
         //监听事件
         dollar.setOnClickListener(this);
         euro.setOnClickListener(this);
         won.setOnClickListener(this);
         config.setOnClickListener(this);
+        rate.setOnClickListener(this);
 
     }
 
-
-    /*private void saveUsersInfo() {
-
-        @SuppressLint("WrongConstant")
-        SharedPreferences sharedPreferences = getSharedPreferences("myrate", MODE_APPEND);
-        PreferenceManager.getDefaultSharedPreferences(this);
-
-        Float dollarRate = sharedPreferences.getFloat("dollar_rate",0.0f);
-        Float euroRate = sharedPreferences.getFloat("euro_rate",0.0f);
-        Float wonRate = sharedPreferences.getFloat("won_rate",0.0f);
-
-        SharedPreferences sp = getSharedPreferences("myrate", Activity.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sp.edit();
-        editor.putFloat("dollar_rate", dollarRate);
-        editor.putFloat("euro_rate", euroRate);
-        editor.putFloat("won_rate", wonRate);
-        editor.apply();
-
-    }*/
-
-
-    //加载菜单文件
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu,menu);
-        return true;
-    }
-
-    //菜单监听
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.menu1:
-                Toast.makeText(this,"menu1",Toast.LENGTH_SHORT).show();
-            case R.id.menu2:
-                Toast.makeText(this,"menu2",Toast.LENGTH_SHORT).show();
-            case R.id.menu3:
-                Toast.makeText(this,"menu3",Toast.LENGTH_SHORT).show();
-            case R.id.menu4:
-                Toast.makeText(this,"menu4",Toast.LENGTH_SHORT).show();
-            default:
-                break;
-        }
-        return true;
-    }
-
-    //鼠标点击事件
     @Override
     public void onClick(View v) {
-
         switch (v.getId()){
             case R.id.dollar_bt:
                 change(0);
@@ -118,7 +61,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 change(2);
                 break;
             case R.id.config_bt:
-                open();
+                openConfig();
+                break;
+            case R.id.rate_bt:
+                openRate();
                 break;
             default:
                 break;
@@ -149,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     //打开新窗口
-    public void open(){
+    public void openConfig(){
 
         //传递数据到页面二
         Intent intent = new Intent(this, MainActivity2.class);
@@ -159,8 +105,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         bundle.putFloat("won_rate",w_exc);
         intent.putExtras(bundle);
 
-        //打开页面二
+        //打开页面二并返回结果
         startActivityForResult(intent,100);
+    }
+
+    //打开新窗口
+    public void openRate(){
+        //打开页面三
+        Intent intent = new Intent(this, ListActivity.class);
+        startActivity(intent);
     }
 
     //获取返回的值
@@ -177,5 +130,55 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
     }
+
+    /*//fragment转换
+    private void changeFragment(int key) {
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        Fragment f = null;
+        if(key == 1){
+            f = new Fragment1();
+        }else if(key == 2){
+            f = new Fragment2();
+        }
+        ft.replace(R.id.fragment,f);
+        ft.commit();
+    }*/
+
+    //加载菜单文件
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu,menu);
+        return true;
+    }
+
+    //菜单监听
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.menu1:
+                Toast.makeText(this,"menu1",Toast.LENGTH_SHORT).show();
+            case R.id.menu2:
+                Toast.makeText(this,"menu2",Toast.LENGTH_SHORT).show();
+            case R.id.menu3:
+                Toast.makeText(this,"menu3",Toast.LENGTH_SHORT).show();
+            case R.id.menu4:
+                Toast.makeText(this,"menu4",Toast.LENGTH_SHORT).show();
+            default:
+                break;
+        }
+        return true;
+    }
+
+    /*// 屏幕横竖屏切换
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if ( newConfig.orientation == Configuration.ORIENTATION_PORTRAIT ) {
+            setContentView(R.layout.activity_main);
+        } else{
+            setContentView(R.layout.main_change);
+        }
+    }*/
 
 }

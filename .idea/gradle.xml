@@ -11,9 +11,9 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/TestProject" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/layout" />
-            <option value="$PROJECT_DIR$/moveicon" />
             <option value="$PROJECT_DIR$/mysecondapp" />
             <option value="$PROJECT_DIR$/scoring" />
           </set>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:screenOrientation="landscape">
+
+    <EditText
+        android:id="@+id/edit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="15dp"
+        android:ems="10"
+        android:gravity="center"
+        android:hint="Input RMB"
+        android:inputType="textPersonName"
+        android:text=""
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/out"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:gravity="center"
+        android:text="Hello"
+        android:textSize="48sp" />
+
+    <GridLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:columnCount="6"
+        android:orientation="horizontal"
+        android:layout_gravity="center">
+
+        <Button
+            android:id="@+id/dollar_bt"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:background="#abc"
+            android:layout_margin="10dp"
+            android:layout_column="0"
+            android:layout_row="0"
+            android:text="Dollar" />
+
+        <Button
+            android:id="@+id/euro_bt"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:background="#abc"
+            android:layout_margin="10dp"
+            android:layout_column="2"
+            android:layout_row="0"
+            android:text="Euro" />
+
+        <Button
+            android:id="@+id/won_bt"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:background="#abc"
+            android:layout_margin="10dp"
+            android:layout_column="4"
+            android:layout_row="0"
+            android:text="Won" />
+
+        <Button
+            android:id="@+id/config_bt"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:background="#cab"
+            android:layout_margin="10dp"
+            android:layout_column="2"
+            android:layout_row="1"
+            android:text="Config" />
+
+    </GridLayout>
+
+
+</LinearLayout>

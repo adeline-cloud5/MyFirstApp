@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -15,6 +16,11 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -22,6 +28,8 @@ import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity2 extends AppCompatActivity implements View.OnClickListener{
 
@@ -29,9 +37,14 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
     private Float d_exc,e_exc,w_exc;
     private Button save;
     SharedPreferences sp;
+    Handler handler;
+    Message msg;
+    private static final String TAG = "MainActivity2";
+    private Map<String,Float> map=new HashMap<String,Float>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
 
@@ -50,37 +63,33 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
         //监听事件
         save.setOnClickListener(this);
 
-       /* //创建线程
-        Thread t = new Thread((Runnable) this);
-        t.start();
-        handler = new Handler(){
+        //创建线程并爬取网页
+        new Thread(new Runnable() {
             @Override
-            public void handleMessage(Message msg){
-                if(msg.what == 5){
-                    String str = (String)msg.obj;
-                    Log.i(TAG, "handleMessage:getMessage msg = " + str);
+            public void run() {
+                System.out.println("Test");
+                String url = "http://www.usd-cny.com/bankofchina.htm";
+
+                try {
+                    Document doc = Jsoup.connect(url).get();
+                    System.out.println(doc.title());
+                    Element table = doc.getElementsByTag("table").first();
+                    Elements trs = table.getElementsByTag("tr");
+                    for(Element tr: trs){
+                        Elements tds = tr.getElementsByTag("td");
+                        if(tds.size()>0){
+                            String td1 = tds.get(0).text();
+                            String td2 = tds.get(5).text();
+                            map.put(td1,Float.parseFloat(td2)/100);
+                        }
+                    }
+                }catch (IOException exception) {
+                    exception.printStackTrace();
                 }
-                super.handleMessage(msg);
             }
-        };
+        }).start();
 
-        Message msg = handler.obtainMessage(5);
-        msg.obj = "Hello from run()";
-        handler.sendMessage(msg);
 
-        URL url = null;
-        try {
-            url = new URL("www.usd-cny.com/bankofchina.htm");
-            HttpURLConnection http = (HttpURLConnection) url.openConnection();
-            InputStream in = http.getInputStream();
-            String html = InputStream2String(in);
-            Log.i(TAG, "run : html = " + html);
-
-        } catch (MalformedURLException ex) {
-            ex.printStackTrace();
-        }catch (IOException e){
-            e.printStackTrace();
-        }*/
 
     }
 
@@ -106,11 +115,9 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
         intent.putExtra("won_rate",w_exc);
         setResult(20,intent);
         finish();
-
-
     }
 
-   /* private String InputStream2String(InputStream inputStream) throws IOException{
+   private String InputStream2String(InputStream inputStream) throws IOException{
         final int bufferSize = 1024;
         final char[] buffer = new char[bufferSize];
         final StringBuilder out = new StringBuilder();
@@ -129,5 +136,5 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
         Log.i(TAG, "run:run().......");
         msg.obj = "Hello from run()";
         handler.sendMessage(msg);
-    }*/
+    }
 }
