@@ -37,9 +37,6 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
     private Float d_exc,e_exc,w_exc;
     private Button save;
     SharedPreferences sp;
-    Handler handler;
-    Message msg;
-    private static final String TAG = "MainActivity2";
     private Map<String,Float> map=new HashMap<String,Float>();
 
     @Override
@@ -62,35 +59,6 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
 
         //监听事件
         save.setOnClickListener(this);
-
-        //创建线程并爬取网页
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                System.out.println("Test");
-                String url = "http://www.usd-cny.com/bankofchina.htm";
-
-                try {
-                    Document doc = Jsoup.connect(url).get();
-                    System.out.println(doc.title());
-                    Element table = doc.getElementsByTag("table").first();
-                    Elements trs = table.getElementsByTag("tr");
-                    for(Element tr: trs){
-                        Elements tds = tr.getElementsByTag("td");
-                        if(tds.size()>0){
-                            String td1 = tds.get(0).text();
-                            String td2 = tds.get(5).text();
-                            map.put(td1,Float.parseFloat(td2)/100);
-                        }
-                    }
-                }catch (IOException exception) {
-                    exception.printStackTrace();
-                }
-            }
-        }).start();
-
-
-
     }
 
     @Override
@@ -109,32 +77,11 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
 
         //传递数据到页面一
         Intent intent = new Intent();
-        Bundle bundle = new Bundle();
         intent.putExtra("dollar_rate",d_exc);
         intent.putExtra("euro_rate",e_exc);
         intent.putExtra("won_rate",w_exc);
         setResult(20,intent);
         finish();
-    }
 
-   private String InputStream2String(InputStream inputStream) throws IOException{
-        final int bufferSize = 1024;
-        final char[] buffer = new char[bufferSize];
-        final StringBuilder out = new StringBuilder();
-        Reader in = new InputStreamReader(inputStream,"gb2312");
-        while (true){
-            int rsz = in.read(buffer,0,buffer.length);
-            if(rsz<0){
-                break;
-            }
-            out.append(buffer,0,rsz);
-        }
-        return out.toString();
-    }
-
-    public void run(){
-        Log.i(TAG, "run:run().......");
-        msg.obj = "Hello from run()";
-        handler.sendMessage(msg);
     }
 }

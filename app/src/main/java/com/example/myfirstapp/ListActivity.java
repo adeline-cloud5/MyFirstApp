@@ -10,14 +10,17 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -29,6 +32,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static android.widget.AbsListView.OnScrollListener.SCROLL_STATE_FLING;
+import static android.widget.AbsListView.OnScrollListener.SCROLL_STATE_IDLE;
+import static android.widget.AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL;
 
 public class ListActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
     private String url = "http://www.usd-cny.com/bankofchina.htm";
@@ -49,7 +56,6 @@ public class ListActivity extends AppCompatActivity implements AdapterView.OnIte
 
         //由于Jsoup不能在主线程上执行，故创建子线程从网络获取数据
         startThread();
-
         //从子线程获取数据后通过handle返回主线程更新UI，并创建adapter适配器
         handler = new Handler() {
             @Override
@@ -58,14 +64,16 @@ public class ListActivity extends AppCompatActivity implements AdapterView.OnIte
                     adapter = new SimpleAdapter(ListActivity.this,
                             maplist,
                             R.layout.list_item,
-                            new String[]{"Country","Rate"},
-                            new int[]{R.id.country,R.id.rate});
+                            new String[]{"Country", "Rate"},
+                            new int[]{R.id.country, R.id.rate});
                     listView.setAdapter(adapter);
                 }
                 super.handleMessage(msg);
             }
         };
+        listView.setOnItemClickListener(this);
     }
+
     /*
     连接网络需要在AndroidManifest中配置：
     <uses-permission android:name="android.permission.INTERNET" />
@@ -74,7 +82,7 @@ public class ListActivity extends AppCompatActivity implements AdapterView.OnIte
     /*
     创建子线程获取和处理网页数据
     */
-    public void startThread(){
+    public void startThread() {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -82,19 +90,18 @@ public class ListActivity extends AppCompatActivity implements AdapterView.OnIte
 
                 try {
                     Document doc = Jsoup.connect(url).get();
-                    Log.i("TAG","==========get===message=============");
+                    Log.i("TAG", "==========get===message=============");
                     Element table = doc.getElementsByTag("table").first();
                     Elements trs = table.getElementsByTag("tr");
-                    for(Element tr: trs){
+                    for (Element tr : trs) {
                         Elements tds = tr.getElementsByTag("td");
-                        HashMap<String,String> map = new HashMap<String, String>();
-                        if(tds.size()>0){
+                        HashMap<String, String> map = new HashMap<String, String>();
+                        if (tds.size() > 0) {
                             String td1 = tds.get(0).text();
                             String td2 = tds.get(5).text();
-                            data.add(td1+"==>"+td2);
-                            map.put("Country",td1);
-                            map.put("Rate",td2);
-                            Log.i("TAG",map.toString());
+                            data.add(td1 + "==>" + td2);
+                            map.put("Country", td1);
+                            map.put("Rate", td2);
                             maplist.add(map);
                         }
                     }
@@ -110,9 +117,29 @@ public class ListActivity extends AppCompatActivity implements AdapterView.OnIte
 
     }
 
+    //列表点击事件监听
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Intent intent = new Intent(this, ListActivity.class);
+
+        Intent intent = new Intent(this, EachList.class);
+        Object itemAtPosition = listView.getItemAtPosition(position);
+        HashMap<String,String> map = (HashMap<String, String>) itemAtPosition;
+        String country = map.get("Country");
+        String rate = map.get("Rate");
+        Log.i("TAG", "onItemClick: country=" + country);
+        Log.i("TAG", "onItemClick: rate=" + rate);
+
+        TextView each_country = view.findViewById(R.id.country);
+        TextView each_rate = view.findViewById(R.id.rate);
+        String country1 = String.valueOf(each_country.getText());
+        String rate1 = String.valueOf(each_rate.getText());
+        Log.i("TAG", "onItemClick: title2=" + country1);
+        Log.i("TAG", "onItemClick: detail2=" + rate1);
+
+        Bundle bundle = new Bundle();
+        bundle.putString("Country",country1);
+        bundle.putString("Rate",rate1);
+        intent.putExtras(bundle);
         startActivity(intent);
     }
 }
