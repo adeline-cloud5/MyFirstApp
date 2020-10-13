@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:id="@+id/list_item"
+    android:gravity="center"
     android:paddingStart="30dp"
     android:paddingEnd="30dp"
     android:paddingTop="20dp"
@@ -23,9 +24,10 @@
         android:id="@+id/rate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
         android:textColor="#b00"
+        android:layout_alignParentRight="true"
         android:layout_marginTop="8dp"
+        android:layout_marginRight="10dp"
         android:text="TextView" />
 
 </RelativeLayout>
