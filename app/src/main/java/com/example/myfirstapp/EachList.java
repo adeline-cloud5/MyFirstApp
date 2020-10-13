@@ -41,22 +41,20 @@ public class EachList extends AppCompatActivity {
         //实时监测输入框的内容
         imput_rmb.addTextChangedListener(new TextWatcher(){
             @Override
+            //输入框改变前
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
-
             @Override
+            //输入框改变时
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String i = s.toString();
                 result = Float.parseFloat(i) * rate;
                 each_result.setText(result.toString());
             }
-
             @Override
+            //输入框改变后
             public void afterTextChanged(Editable s) {
-
             }
-
         });
     }
 }

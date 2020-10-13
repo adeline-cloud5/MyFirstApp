@@ -29,9 +29,13 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import static android.widget.AbsListView.OnScrollListener.SCROLL_STATE_FLING;
 import static android.widget.AbsListView.OnScrollListener.SCROLL_STATE_IDLE;
@@ -45,6 +49,8 @@ public class ListActivity extends AppCompatActivity implements AdapterView.OnIte
     private SimpleAdapter adapter;
     private Handler handler;
     private Message msg;
+    private Timer timer = new Timer();
+    private long DAY = 24*60*60*5000;
 
     @SuppressLint("HandlerLeak")
     @Override
@@ -53,10 +59,11 @@ public class ListActivity extends AppCompatActivity implements AdapterView.OnIte
         setContentView(R.layout.activity_list);
 
         listView = findViewById(R.id.mylist);
-
+        //每日更新一次数据
+        timeTask();
         //由于Jsoup不能在主线程上执行，故创建子线程从网络获取数据
-        startThread();
-        //从子线程获取数据后通过handle返回主线程更新UI，并创建adapter适配器
+        //startThread();
+        //通过handle返回主线程更新UI，并创建adapter适配器
         handler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
@@ -72,6 +79,24 @@ public class ListActivity extends AppCompatActivity implements AdapterView.OnIte
             }
         };
         listView.setOnItemClickListener(this);
+    }
+
+    //使用计时器每日获取一次数据
+    private void timeTask() {
+        TimerTask timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                startThread();
+            }
+        };
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY,0); //凌晨1点
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        //第一次执行定时任务的时间
+        Date date=calendar.getTime();
+        Log.i("TAG",date.toString());
+        timer.schedule(timerTask,date,DAY);
     }
 
     /*
@@ -114,7 +139,6 @@ public class ListActivity extends AppCompatActivity implements AdapterView.OnIte
                 handler.sendMessage(msg);
             }
         }).start();
-
     }
 
     //列表点击事件监听
@@ -133,8 +157,6 @@ public class ListActivity extends AppCompatActivity implements AdapterView.OnIte
         TextView each_rate = view.findViewById(R.id.rate);
         String country1 = String.valueOf(each_country.getText());
         String rate1 = String.valueOf(each_rate.getText());
-        Log.i("TAG", "onItemClick: title2=" + country1);
-        Log.i("TAG", "onItemClick: detail2=" + rate1);
 
         Bundle bundle = new Bundle();
         bundle.putString("Country",country1);
