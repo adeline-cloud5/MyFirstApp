@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Detail">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+
+        <ImageButton
+            android:id="@+id/back_bt"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentLeft="true"
+            android:background="@mipmap/icons_back" />
+
+        <TextView
+            android:id="@+id/titleDetail"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_toRightOf="@+id/back_bt"
+            android:layout_toLeftOf="@+id/save_bt"
+            android:gravity="center"
+            android:background="#fff"
+            android:textStyle="bold"
+            android:textSize="24sp"
+            android:text="Title" />
+
+        <ImageButton
+            android:id="@+id/save_bt"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:background="@mipmap/icons_save" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/timeDetail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#fff"
+        android:gravity="center"
+        android:textColor="#333"
+        android:layout_margin="10dp"
+        android:text="Time" />
+
+    <EditText
+        android:id="@+id/editDetail"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:ems="10"
+        android:gravity="start|top"
+        android:background="#eee"
+        android:hint="imput detail"
+        android:padding="10dp"
+        android:inputType="textMultiLine" />
+</LinearLayout>

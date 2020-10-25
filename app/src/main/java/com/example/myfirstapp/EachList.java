@@ -18,7 +18,7 @@ public class EachList extends AppCompatActivity {
 
     private TextView each_country,each_result;
     private EditText imput_rmb;
-    private String country,input;
+    private String country;
     private Float rate,result;
 
     @Override

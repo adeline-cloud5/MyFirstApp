@@ -6,6 +6,16 @@
     android:layout_height="match_parent"
     tools:context=".ListActivity">
 
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:max="100"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="150dp"/>
+
     <ListView
         android:id="@+id/mylist"
         android:layout_width="match_parent"
@@ -22,6 +32,6 @@
         android:layout_height="match_parent"
         android:textSize="40sp"
         android:gravity="center"
-        android:text="No Data" />
+        android:text="loading" />
 
 </RelativeLayout>

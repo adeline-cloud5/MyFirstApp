@@ -14,8 +14,12 @@
             <option value="$PROJECT_DIR$/TestProject" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/layout" />
+            <option value="$PROJECT_DIR$/lib" />
             <option value="$PROJECT_DIR$/mysecondapp" />
+            <option value="$PROJECT_DIR$/notes" />
+            <option value="$PROJECT_DIR$/notes2" />
             <option value="$PROJECT_DIR$/scoring" />
+            <option value="$PROJECT_DIR$/scoring/notes" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

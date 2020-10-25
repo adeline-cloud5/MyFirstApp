@@ -1,19 +1,16 @@
-package com.example.myfirstapp;
+package com.example.notes;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
 public class MyAdapter extends ArrayAdapter {
@@ -31,10 +28,12 @@ public class MyAdapter extends ArrayAdapter {
         }
 
         Map<String,String> map = (Map<String,String>) getItem(position);
-        TextView country = itemView.findViewById(R.id.country);
-        TextView rate = itemView.findViewById(R.id.rate);
-        country.setText(map.get("country"));
-        rate.setText(map.get("rate"));
+        TextView title = itemView.findViewById(R.id.taskTitle);
+        TextView time = itemView.findViewById(R.id.taskTime);
+        TextView id = itemView.findViewById(R.id.idText);
+        title.setText(map.get("title"));
+        time.setText(map.get("time"));
+        id.setText(map.get("id"));
 
         return itemView;
     }
