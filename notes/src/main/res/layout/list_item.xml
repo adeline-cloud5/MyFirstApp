@@ -16,6 +16,7 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:layout_marginRight="10dp"
+        android:textColor="#fff"
         android:text="id" />
 
     <LinearLayout

@@ -133,4 +133,5 @@ public class TaskListFragment extends Fragment implements AdapterView.OnItemClic
         intent.putExtras(bundle);
         startActivity(intent);
     }
+
 }
