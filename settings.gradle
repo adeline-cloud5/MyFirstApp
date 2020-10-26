@@ -1,6 +1,4 @@
 include ':notes'
-include ':notes2'
-include ':scoring:notes'
 include ':lib'
 include ':TestProject'
 include ':Testproject'

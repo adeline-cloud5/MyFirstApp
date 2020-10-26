@@ -3,7 +3,7 @@
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel>
       <module name="lib" target="1.7" />
-      <module name="TestProject" target="1.7" />
+      <module name="Testproject" target="1.7" />
     </bytecodeTargetLevel>
   </component>
 </project>

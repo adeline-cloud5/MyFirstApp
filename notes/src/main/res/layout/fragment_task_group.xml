@@ -3,14 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ListGroupFragment">
+    tools:context=".TaskGroupFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:id="@+id/ListGroupTextView"
+        android:id="@+id/TaskGroupTextView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="List Group Fragment"
+        android:text="Task Group Fragment"
         android:textSize="30sp"
         android:gravity="center"
         android:background="#adc"/>

@@ -7,48 +7,93 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <RadioGroup
-        android:id="@+id/TopRadioGroup"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:background="#ccc">
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme">
 
-        <RadioButton
-            android:id="@+id/TaskListButton"
+        <TextView
+        android:id="@+id/titleBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="便签"
+        android:textColor="#fff"
+        android:textSize="22sp" />
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RadioGroup
+                android:id="@+id/TopRadioGroup"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="#ccc"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/TaskListButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:button="@null"
+                    android:background="#cce"
+                    android:gravity="center"
+                    android:text="TaskList"
+                    android:textColor="#222"
+                    android:textSize="20sp"/>
+
+                <RadioButton
+                    android:id="@+id/ListGroupButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="#ecc"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:text="TaskGroup"
+                    android:textSize="20sp" />
+            </RadioGroup>
+
+            <fragment
+                android:id="@+id/TaskListFragment"
+                android:name="com.example.notes.TaskListFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <fragment
+                android:id="@+id/ListGroupFragment"
+                android:name="com.example.notes.TaskGroupFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/floatButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="TaskList"
-            android:textColor="#222"
-            android:button="@null"
-            android:background="#cce"
-            android:textSize="20sp" />
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:clickable="true"
+            android:scaleType="center"
+            app:backgroundTint="#fff"
+            app:fabSize="normal"
+            app:maxImageSize="70dp"
+            android:layout_margin="30dp"
+            app:srcCompat="@mipmap/icons_add_96" />
 
-        <RadioButton
-            android:id="@+id/ListGroupButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:button="@null"
-            android:text="TaskGroup"
-            android:background="#ecc"
-            android:textSize="20sp" />
-    </RadioGroup>
-
-    <fragment
-        android:id="@+id/TaskListFragment"
-        android:name="com.example.notes.TaskListFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-    <fragment
-        android:id="@+id/ListGroupFragment"
-        android:name="com.example.notes.ListGroupFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+    </RelativeLayout>
 
 </LinearLayout>

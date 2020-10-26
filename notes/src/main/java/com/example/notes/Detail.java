@@ -140,15 +140,17 @@ public class Detail extends AppCompatActivity implements View.OnClickListener{
 
     //保存数据到数据库
     private void saveData(String title,String date,String tag,String detail) {
-        ContentValues values = new ContentValues();
-        values.put("title",title);
-        values.put("time",date);
-        values.put("tag",tag);
-        values.put("detail",detail);
         if(isChanged()){
+            ContentValues values = new ContentValues();
+            values.put("title",title);
+            values.put("time",date);
+            values.put("tag",tag);
+            values.put("detail",detail);
             dbOpenHelper.getReadableDatabase().update(TB_NAME,values,"id=?",new String[]{id});
+            Log.i("TAG","-------update--data----------");
+        }else{
+            return;
         }
-        Log.i("TAG","-------update--data----------");
     }
 
     //判断页面数据是否被修改

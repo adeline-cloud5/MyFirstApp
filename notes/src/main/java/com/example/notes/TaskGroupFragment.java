@@ -10,18 +10,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-public class ListGroupFragment extends Fragment {
+public class TaskGroupFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_list_group, container, false);
+        return inflater.inflate(R.layout.fragment_task_group, container, false);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        TextView textView = getView().findViewById(R.id.ListGroupTextView);
-        textView.setText("Welcome to ListGroup View");
+        TextView textView = getView().findViewById(R.id.TaskGroupTextView);
+        textView.setText("Welcome to TaskGroup View");
     }
 }

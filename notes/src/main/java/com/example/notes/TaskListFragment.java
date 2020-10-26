@@ -1,6 +1,8 @@
 package com.example.notes;
 
+import android.app.AlertDialog;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -9,6 +11,8 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,7 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class TaskListFragment extends Fragment implements AdapterView.OnItemClickListener {
+public class TaskListFragment extends Fragment implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
 
     private ListView listView;
     private DBOpenHelper dbOpenHelper;
@@ -43,17 +47,19 @@ public class TaskListFragment extends Fragment implements AdapterView.OnItemClic
         super.onActivityCreated(savedInstanceState);
 
         dbOpenHelper = new DBOpenHelper(getActivity(),TB_NAME,null,1);
-
         listView = getView().findViewById(R.id.mylist);
 
-        //insertData(dbOpenHelper.getReadableDatabase());
+        //insertData();
         getData();
         adapter = new MyAdapter(getActivity(),R.layout.list_item,maplist);
         listView.setAdapter(adapter);
         //当列表中没有数据时显示空视图
         listView.setEmptyView(getView().findViewById(R.id.nodata));
+
+
         //创建点击事件监听器
         listView.setOnItemClickListener(this);
+        listView.setOnItemLongClickListener(this);
     }
 
     //获取数据库的数据
@@ -75,8 +81,9 @@ public class TaskListFragment extends Fragment implements AdapterView.OnItemClic
     }
 
     //向数据库中插入数据
-    private void insertData(SQLiteDatabase sqLiteDatabase){
+    private void insertData(){
 
+        SQLiteDatabase sqLiteDatabase = dbOpenHelper.getReadableDatabase();
         ContentValues values = new ContentValues();
         values.put("title","title1");
         values.put("time","time1");
@@ -87,8 +94,9 @@ public class TaskListFragment extends Fragment implements AdapterView.OnItemClic
     }
 
     //数据库更新数据
-    private void updateData(SQLiteDatabase sqLiteDatabase, String country,String rate){
+    private void updateData(String country,String rate){
 
+        SQLiteDatabase sqLiteDatabase = dbOpenHelper.getReadableDatabase();
         ContentValues values = new ContentValues();
         values.put("rate",rate);
         sqLiteDatabase.update(TB_NAME,values,"country=?",new String[]{country});
@@ -96,9 +104,10 @@ public class TaskListFragment extends Fragment implements AdapterView.OnItemClic
     }
 
     //数据库删除数据
-    private void deleteData(SQLiteDatabase sqLiteDatabase, String country){
+    private void deleteData(String idtext){
 
-        sqLiteDatabase.delete(TB_NAME,"country=?",new String[]{country});
+        SQLiteDatabase sqLiteDatabase = dbOpenHelper.getReadableDatabase();
+        sqLiteDatabase.delete(TB_NAME,"id=?",new String[]{idtext});
         Log.i("TAG","------delete--data---------");
     }
 
@@ -132,6 +141,29 @@ public class TaskListFragment extends Fragment implements AdapterView.OnItemClic
         bundle.putString("id",idText);
         intent.putExtras(bundle);
         startActivity(intent);
+    }
+
+    //列表长按事件监听器
+    @Override
+    public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("提示")
+                .setMessage("请确认是否删除数据")
+                .setPositiveButton("是", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Object itemAtPosition = listView.getItemAtPosition(position);
+                        HashMap<String,String> map = (HashMap<String, String>) itemAtPosition;
+                        String idText = map.get("id");
+                        deleteData(idText);
+                        //刷新
+                        adapter.notifyDataSetChanged();
+                        Log.i("TAG","------刷新--------");
+                    }
+                }).setNegativeButton("否",null);
+        builder.create().show();
+        return true;
     }
 
 }
