@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity"
+    tools:showIn="@layout/bar_main">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RadioGroup
+                android:id="@+id/TopRadioGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#fff"
+                android:gravity="center"
+                android:layout_marginTop="60dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/TaskListButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:button="@null"
+                    android:background="@drawable/radio_button_left"
+                    android:gravity="center"
+                    android:text="列  表"
+                    android:checked="true"
+                    android:textColor="@color/button_text_color"
+                    android:textSize="18sp" />
+
+                <RadioButton
+                    android:id="@+id/ListGroupButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/radio_button_right"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:text="分  类"
+                    android:textColor="@color/button_text_color"
+                    android:textSize="18sp" />
+            </RadioGroup>
+
+            <fragment
+                android:id="@+id/TaskListFragment"
+                android:name="com.example.notes.TaskListFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <fragment
+                android:id="@+id/ListGroupFragment"
+                android:name="com.example.notes.TaskGroupFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/floatButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:clickable="true"
+            android:scaleType="center"
+            app:backgroundTint="#fff"
+            app:fabSize="normal"
+            app:maxImageSize="70dp"
+            android:layout_margin="30dp"
+            app:srcCompat="@mipmap/icons_add_96" />
+
+</RelativeLayout>

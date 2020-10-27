@@ -49,13 +49,11 @@ public class TaskListFragment extends Fragment implements AdapterView.OnItemClic
         dbOpenHelper = new DBOpenHelper(getActivity(),TB_NAME,null,1);
         listView = getView().findViewById(R.id.mylist);
 
-        //insertData();
         getData();
         adapter = new MyAdapter(getActivity(),R.layout.list_item,maplist);
         listView.setAdapter(adapter);
         //当列表中没有数据时显示空视图
         listView.setEmptyView(getView().findViewById(R.id.nodata));
-
 
         //创建点击事件监听器
         listView.setOnItemClickListener(this);
@@ -78,29 +76,6 @@ public class TaskListFragment extends Fragment implements AdapterView.OnItemClic
             maplist.add(map);
         }
         Log.i("TAG",maplist.toString());
-    }
-
-    //向数据库中插入数据
-    private void insertData(){
-
-        SQLiteDatabase sqLiteDatabase = dbOpenHelper.getReadableDatabase();
-        ContentValues values = new ContentValues();
-        values.put("title","title1");
-        values.put("time","time1");
-        values.put("tag","tag1");
-        values.put("detail","detail1");
-        sqLiteDatabase.insert(TB_NAME,null,values);
-        Log.i("TAG","------insert--data---------");
-    }
-
-    //数据库更新数据
-    private void updateData(String country,String rate){
-
-        SQLiteDatabase sqLiteDatabase = dbOpenHelper.getReadableDatabase();
-        ContentValues values = new ContentValues();
-        values.put("rate",rate);
-        sqLiteDatabase.update(TB_NAME,values,"country=?",new String[]{country});
-        Log.i("TAG","-------update--data----------");
     }
 
     //数据库删除数据
