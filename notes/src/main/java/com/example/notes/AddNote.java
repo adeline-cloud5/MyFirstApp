@@ -23,16 +23,15 @@ import java.util.Calendar;
 
 public class AddNote extends AppCompatActivity implements RadioGroup.OnCheckedChangeListener, View.OnClickListener, TextWatcher {
 
-    private RadioButton tagButton1,tagButton2,tagButton3,tagButton4;
+    private RadioButton radioButton;
     private Button createButton;
     private EditText addTitle,addDetail;
     private RadioGroup radioGroup;
     private DBOpenHelper dbOpenHelper;
     private Toolbar toolbar;
     private TextView title;
+    private String selectTag;
     public static final String TB_NAME = "notes";
-    private int checkedTag = 3;
-    private String[] tagList = new String[]{"学习","工作","生活","默认"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,10 +50,6 @@ public class AddNote extends AppCompatActivity implements RadioGroup.OnCheckedCh
         addTitle = findViewById(R.id.addTitle);
         addDetail = findViewById(R.id.addDetail);
 
-        tagButton1 = findViewById(R.id.tagButton1);
-        tagButton2 = findViewById(R.id.tagButton2);
-        tagButton3 = findViewById(R.id.tagButton3);
-        tagButton4 = findViewById(R.id.tagButton4);
         createButton = findViewById(R.id.createButton);
         title = findViewById(R.id.titleBar);
 
@@ -67,14 +62,14 @@ public class AddNote extends AppCompatActivity implements RadioGroup.OnCheckedCh
                 openActivity(MainActivity.class);
             }
         });
-
     }
 
     //单选按钮监听
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
-        checkedTag = checkedId-2131231061;
-        Log.i("TAG","checked:"+checkedTag);
+        radioButton = (RadioButton)findViewById(radioGroup.getCheckedRadioButtonId());
+        selectTag = radioButton.getText().toString();
+        Log.i("TAG",selectTag);
     }
 
     //新建按钮监听
@@ -88,7 +83,6 @@ public class AddNote extends AppCompatActivity implements RadioGroup.OnCheckedCh
 
         String title = addTitle.getText().toString();
         String detail = addDetail.getText().toString();
-        String tag = tagList[checkedTag];
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String time = sdf.format(calendar.getTime());
@@ -100,7 +94,7 @@ public class AddNote extends AppCompatActivity implements RadioGroup.OnCheckedCh
             ContentValues values = new ContentValues();
             values.put("title",title);
             values.put("time",time);
-            values.put("tag",tag);
+            values.put("tag",selectTag);
             values.put("detail",detail);
             sqLiteDatabase.insert(TB_NAME,null,values);
             Log.i("TAG","------insert--data---------");

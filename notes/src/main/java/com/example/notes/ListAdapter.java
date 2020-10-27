@@ -14,9 +14,9 @@ import androidx.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class MyAdapter extends ArrayAdapter {
+public class ListAdapter extends ArrayAdapter {
 
-    public MyAdapter(@NonNull Context context, int resource, ArrayList<Map<String, String>> list) {
+    public ListAdapter(@NonNull Context context, int resource, ArrayList<Map<String, String>> list) {
         super(context, resource, list);
     }
 

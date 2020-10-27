@@ -56,7 +56,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         fragmentRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                Log.i("TAG","checkedId = "+checkedId);
                 fragmentTransaction = fragmentManager.beginTransaction()
                         .hide(mFragments[0]).hide(mFragments[1]);
                 switch (checkedId){

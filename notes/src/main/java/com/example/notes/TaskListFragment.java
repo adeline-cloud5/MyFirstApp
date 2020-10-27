@@ -1,7 +1,6 @@
 package com.example.notes;
 
 import android.app.AlertDialog;
-import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -11,21 +10,15 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class TaskListFragment extends Fragment implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
@@ -33,7 +26,7 @@ public class TaskListFragment extends Fragment implements AdapterView.OnItemClic
     private ListView listView;
     private DBOpenHelper dbOpenHelper;
     public static final String TB_NAME = "notes";
-    private MyAdapter adapter;
+    private ListAdapter adapter;
     private ArrayList<Map<String, String>> maplist = new ArrayList<Map<String, String>>();
 
     @Override
@@ -50,7 +43,7 @@ public class TaskListFragment extends Fragment implements AdapterView.OnItemClic
         listView = getView().findViewById(R.id.mylist);
 
         getData();
-        adapter = new MyAdapter(getActivity(),R.layout.list_item,maplist);
+        adapter = new ListAdapter(getActivity(),R.layout.list_item,maplist);
         listView.setAdapter(adapter);
         //当列表中没有数据时显示空视图
         listView.setEmptyView(getView().findViewById(R.id.nodata));
@@ -133,12 +126,19 @@ public class TaskListFragment extends Fragment implements AdapterView.OnItemClic
                         String idText = map.get("id");
                         deleteData(idText);
                         //刷新
-                        adapter.notifyDataSetChanged();
+                        //adapter.notifyDataSetChanged();
+                        openActivity(MainActivity.class);
                         Log.i("TAG","------刷新--------");
                     }
                 }).setNegativeButton("否",null);
         builder.create().show();
         return true;
+    }
+
+    //打开新窗口
+    public void openActivity(Class activity){
+        Intent intent = new Intent(getActivity(),activity);
+        startActivity(intent);
     }
 
 }
