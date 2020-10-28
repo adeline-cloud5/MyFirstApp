@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".GroupDetail">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/tagBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#fff"
+        android:minHeight="?attr/actionBarSize"
+        android:backgroundTint="#fff"
+        android:layout_marginBottom="1dp"
+        android:theme="?attr/actionBarTheme" >
+        <TextView
+            android:id="@+id/tagTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="标题"
+            android:textColor="#3700b3"
+            android:textSize="22sp" />
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <ListView
+        android:id="@+id/tagList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>

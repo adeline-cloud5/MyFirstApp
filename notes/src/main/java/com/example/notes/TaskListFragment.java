@@ -7,9 +7,12 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,15 +20,17 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class TaskListFragment extends Fragment implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
+public class TaskListFragment extends Fragment implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener{
 
     private ListView listView;
     private DBOpenHelper dbOpenHelper;
-    public static final String TB_NAME = "notes";
+    public static final String TB_NOTE = "notes";
     private ListAdapter adapter;
     private ArrayList<Map<String, String>> maplist = new ArrayList<Map<String, String>>();
 
@@ -39,7 +44,7 @@ public class TaskListFragment extends Fragment implements AdapterView.OnItemClic
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        dbOpenHelper = new DBOpenHelper(getActivity(),TB_NAME,null,1);
+        dbOpenHelper = new DBOpenHelper(getActivity(),TB_NOTE,null,1);
         listView = getView().findViewById(R.id.mylist);
 
         getData();
@@ -55,7 +60,7 @@ public class TaskListFragment extends Fragment implements AdapterView.OnItemClic
 
     //获取数据库的数据
     private void getData() {
-        Cursor cursor = dbOpenHelper.getReadableDatabase().query(TB_NAME,null,null,null,null,null,null);
+        Cursor cursor = dbOpenHelper.getReadableDatabase().query(TB_NOTE,null,null,null,null,null,null);
         Log.i("TAG","---------searching--data---------");
 
         //把查询结果保存到resultList中
@@ -73,32 +78,22 @@ public class TaskListFragment extends Fragment implements AdapterView.OnItemClic
 
     //数据库删除数据
     private void deleteData(String idtext){
-
         SQLiteDatabase sqLiteDatabase = dbOpenHelper.getReadableDatabase();
-        sqLiteDatabase.delete(TB_NAME,"id=?",new String[]{idtext});
+        sqLiteDatabase.delete(TB_NOTE,"id=?",new String[]{idtext});
         Log.i("TAG","------delete--data---------");
-    }
-
-    //关闭数据库连接
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if(dbOpenHelper!=null){
-            dbOpenHelper.close();
-        }
     }
 
     //列表点击事件监听器
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-
-        Intent intent = new Intent(getActivity(), Detail.class);
+        Intent intent = new Intent(getActivity(), ListDetail.class);
         Object itemAtPosition = listView.getItemAtPosition(position);
         HashMap<String,String> map = (HashMap<String, String>) itemAtPosition;
         String title = map.get("title");
         String time = map.get("time");
         String idText = map.get("id");
+        String tag = map.get("tag");
         Log.i("TAG", "onItemClick: title=" + title);
         Log.i("TAG", "onItemClick: time=" + time);
         Log.i("TAG", "onItemClick: id=" + idText);
@@ -107,8 +102,19 @@ public class TaskListFragment extends Fragment implements AdapterView.OnItemClic
         bundle.putString("title",title);
         bundle.putString("time",time);
         bundle.putString("id",idText);
+        bundle.putString("tag",tag);
         intent.putExtras(bundle);
         startActivity(intent);
+    }
+
+    //返回后重新启动fragment并刷新
+    @Override
+    public void onResume() {
+        super.onResume();
+        maplist = new ArrayList<Map<String, String>>();
+        getData();
+        adapter = new ListAdapter(getActivity(),R.layout.list_item,maplist);
+        listView.setAdapter(adapter);
     }
 
     //列表长按事件监听器
@@ -124,10 +130,11 @@ public class TaskListFragment extends Fragment implements AdapterView.OnItemClic
                         Object itemAtPosition = listView.getItemAtPosition(position);
                         HashMap<String,String> map = (HashMap<String, String>) itemAtPosition;
                         String idText = map.get("id");
+                        maplist.remove(position);
                         deleteData(idText);
                         //刷新
-                        //adapter.notifyDataSetChanged();
-                        openActivity(MainActivity.class);
+                        adapter.notifyDataSetChanged();
+                        //openActivity(MainActivity.class);
                         Log.i("TAG","------刷新--------");
                     }
                 }).setNegativeButton("否",null);
@@ -135,10 +142,12 @@ public class TaskListFragment extends Fragment implements AdapterView.OnItemClic
         return true;
     }
 
-    //打开新窗口
-    public void openActivity(Class activity){
-        Intent intent = new Intent(getActivity(),activity);
-        startActivity(intent);
+    //关闭数据库连接
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(dbOpenHelper!=null){
+            dbOpenHelper.close();
+        }
     }
-
 }

@@ -7,7 +7,7 @@
     android:background="#ccc">
     <!--android:background="#651FFF"-->
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+        android:id="@+id/addNoteToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="?attr/actionBarSize"
@@ -141,6 +141,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
                     android:text="默认" />
+
             </RadioGroup>
         </LinearLayout>
 

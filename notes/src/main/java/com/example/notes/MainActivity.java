@@ -60,9 +60,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         .hide(mFragments[0]).hide(mFragments[1]);
                 switch (checkedId){
                     case R.id.TaskListButton:
+                        mFragments[0].onResume();
                         fragmentTransaction.show(mFragments[0]).commit();
                         break;
                     case R.id.ListGroupButton:
+                        mFragments[1].onResume();
                         fragmentTransaction.show(mFragments[1]).commit();
                         break;
                     default:
@@ -73,6 +75,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         floatButton.setOnClickListener(this);
         settings.setOnClickListener(this);
+
     }
 
     //初始化drawerLayout
@@ -126,7 +129,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.floatButton:
-                Intent intent = new Intent(MainActivity.this,AddNote.class);
+                Intent intent = new Intent(this,AddNote.class);
                 startActivity(intent);
                 break;
             case R.id.settings:

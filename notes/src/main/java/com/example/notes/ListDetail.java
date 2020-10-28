@@ -5,43 +5,42 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
-public class Detail extends AppCompatActivity implements View.OnClickListener{
+public class ListDetail extends AppCompatActivity implements View.OnClickListener{
 
     private ImageButton back_bt,tag_bt;
     private TextView timeDetail,tagText;
     private EditText titleDetail,editDetail;
-    private String title,time,id;
-    public static final String TB_NAME = "notes";
-    private DBOpenHelper dbOpenHelper;
-    private Map<String,String> map;
-    private String[] tagList = new String[]{"学习","工作","生活","默认"};
-    public int checkeditem = 0;
+    private String title,time,id,tag;
+    private DBOpenHelper dbOpenHelperNote,dbOpenHelperTag;
+    public static final String TB_NOTE = "notes";
+    public static final String TB_TAG = "tags";
+    private ArrayList<String> tags = new ArrayList<String>();
+    public int checkeditem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detail);
+        setContentView(R.layout.activity_list_detail);
 
-        dbOpenHelper = new DBOpenHelper(this,TB_NAME,null,1);
+        dbOpenHelperNote = new DBOpenHelper(this,TB_NOTE,null,1);
+        dbOpenHelperTag = new DBOpenHelper(this,TB_TAG,null,1);
         back_bt = findViewById(R.id.back_bt);
         tag_bt = findViewById(R.id.tag_bt);
         titleDetail = findViewById(R.id.titleDetail);
@@ -54,11 +53,19 @@ public class Detail extends AppCompatActivity implements View.OnClickListener{
         title = bundle.getString("title");
         time = bundle.getString("time");
         id = bundle.getString("id");
+        tag = bundle.getString("tag");
         titleDetail.setText(title);
         timeDetail.setText(time);
         editDetail.setText("detail");
-        tagText.setText(getData("tag"));
-        editDetail.setText(getData("detail"));
+        tagText.setText(getNoteData("tag"));
+        editDetail.setText(getNoteData("detail"));
+
+        getTagData();
+        for(int i=0;i<tags.size();i++){
+            if(tags.get(i).equals(getNoteData("tag"))){
+                checkeditem=i;
+            }
+        }
 
         back_bt.setOnClickListener(this);
         tag_bt.setOnClickListener(this);
@@ -81,23 +88,39 @@ public class Detail extends AppCompatActivity implements View.OnClickListener{
 
     //选择标签提示框
     private void tagAlertDialog() {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(Detail.this);
+        String[] tagList = new String[20];
+        int i = 0;
+        for(String tag:tags){
+            tagList[i] = tag;
+            i++;
+        }
+        String[] list = Arrays.copyOfRange(tagList,0,i);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(ListDetail.this);
         builder.setTitle("选择标签")
-                .setSingleChoiceItems(tagList, checkeditem, new DialogInterface.OnClickListener() {
+                .setSingleChoiceItems(list, checkeditem, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         checkeditem = which;
-                        Toast.makeText(getApplicationContext(), "成功加入" + tagList[which]+"标签", Toast.LENGTH_SHORT).show();
+                        tagText.setText(tags.get(checkeditem));
                         dialog.dismiss();
-                        tagText.setText(tagList[checkeditem]);
                     }
                 });
+                /*.setSingleChoiceItems(tags,checkeditem, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        checkeditem = which;
+                        //Toast.makeText(this, "成功加入"+checkeditem+"标签", Toast.LENGTH_SHORT).show();
+                        tagText.setText(tags.get(checkeditem));
+                        Log.i("TAG",tags.get(checkeditem));
+                        dialog.dismiss();
+                    }
+                });*/
         builder.create().show();
     }
 
     //保存提示框
     public void saveAlertDialog(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(Detail.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(ListDetail.this);
         builder.setTitle("提示")
                 .setMessage("请确认是否保存数据")
                 .setPositiveButton("是", new DialogInterface.OnClickListener() {
@@ -116,26 +139,31 @@ public class Detail extends AppCompatActivity implements View.OnClickListener{
                         }else if(detailText.equals("")){
                             Toast.makeText(getApplicationContext(), "请输入内容！", Toast.LENGTH_SHORT).show();
                         }else{
-                            saveData(titleText,date,tagList[checkeditem],detailText);
+                            saveData(titleText,date,tags.get(checkeditem),detailText);
                             Log.i("TAG","OnClick：保存数据");
-                            openActivity(TaskListFragment.class);
+                            finish();
                         }
                     }
                 })
                 .setNegativeButton("否", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                openActivity(MainActivity.class);
+                finish();
             }
         })
                 .setNeutralButton("取消", null);
         builder.create().show();
     }
 
-    //打开新窗口
-    public void openActivity(Class activity){
-        Intent intent = new Intent(this,activity);
-        startActivity(intent);
+    //返回刷新标志
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK){
+            Intent intent = new Intent();
+            setResult(RESULT_OK, intent);
+            finish();
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     //保存数据到数据库
@@ -146,7 +174,7 @@ public class Detail extends AppCompatActivity implements View.OnClickListener{
             values.put("time",date);
             values.put("tag",tag);
             values.put("detail",detail);
-            dbOpenHelper.getReadableDatabase().update(TB_NAME,values,"id=?",new String[]{id});
+            dbOpenHelperNote.getReadableDatabase().update(TB_NOTE,values,"id=?",new String[]{id});
             Log.i("TAG","-------update--data----------");
         }else{
             return;
@@ -155,12 +183,12 @@ public class Detail extends AppCompatActivity implements View.OnClickListener{
 
     //判断页面数据是否被修改
     public boolean isChanged(){
-        String preTitle = getData("title");
-        String preTag = getData("tag");
-        String preDetail = getData("detail");
+        String preTitle = getNoteData("title");
+        String preTag = getNoteData("tag");
+        String preDetail = getNoteData("detail");
         String newTitle = titleDetail.getText().toString();
         String newDetail = editDetail.getText().toString();
-        String newTag = tagList[checkeditem];
+        String newTag = tags.get(checkeditem);
         if(preTitle!=newTitle || preTag!=newTag || preDetail!=newDetail){
             Log.i("TAG","-------changed------");
             return true;
@@ -170,9 +198,9 @@ public class Detail extends AppCompatActivity implements View.OnClickListener{
         }
     }
 
-    //获取数据库的数据
-    private String getData(String what) {
-        Cursor cursor = dbOpenHelper.getReadableDatabase().query(TB_NAME,null,"id=?",new String[]{id},null,null,null);
+    //获取Note数据库的数据
+    private String getNoteData(String what) {
+        Cursor cursor = dbOpenHelperNote.getReadableDatabase().query(TB_NOTE,null,"id=?",new String[]{id},null,null,null);
         String id = null,tag = null,detail = null,title = null;
         while (cursor.moveToNext()){
             id = cursor.getString(0);
@@ -191,6 +219,16 @@ public class Detail extends AppCompatActivity implements View.OnClickListener{
             return title;
         }else {
             return null;
+        }
+    }
+
+    //获取数据库的数据
+    private void getTagData() {
+        Cursor cursor = dbOpenHelperTag.getReadableDatabase().query(TB_TAG,null,null,null,null,null,null);
+        while (cursor.moveToNext()){
+            String tag = cursor.getString(1);
+            Log.i("TAG","-----"+tag+"----");
+            tags.add(tag);
         }
     }
 }
