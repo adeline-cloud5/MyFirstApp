@@ -41,7 +41,6 @@ public class AddNote extends AppCompatActivity implements RadioGroup.OnCheckedCh
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_note);
-        //addRadioButton();
 
         //设置标题栏
         toolbar = findViewById(R.id.addNoteToolbar);
@@ -52,13 +51,12 @@ public class AddNote extends AppCompatActivity implements RadioGroup.OnCheckedCh
 
         dbOpenHelperNote = new DBOpenHelper(this,TB_NOTE,null,1);
         dbOpenHelperTag = new DBOpenHelper(this,TB_TAG,null,1);
-
         addTitle = findViewById(R.id.addTitle);
         addDetail = findViewById(R.id.addDetail);
         createButton = findViewById(R.id.createButton);
         title = findViewById(R.id.titleBar);
         radioGroup = findViewById(R.id.tagButtonGroup);
-
+        addRadioButton();
 
         radioGroup.setOnCheckedChangeListener(this);
         createButton.setOnClickListener(this);
@@ -80,6 +78,7 @@ public class AddNote extends AppCompatActivity implements RadioGroup.OnCheckedCh
             RadioButton button = new RadioButton(this);
             button.setText(str);
             button.setId(index);
+            button.setTextSize(18);
             radioGroup.addView(button);
             LinearLayout.LayoutParams layoutParams= (LinearLayout.LayoutParams) button
                     .getLayoutParams();

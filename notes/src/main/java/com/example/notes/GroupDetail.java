@@ -57,6 +57,12 @@ public class GroupDetail extends AppCompatActivity implements AdapterView.OnItem
         //创建点击事件监听器
         taglist.setOnItemClickListener(this);
         taglist.setOnItemLongClickListener(this);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     //列表点击事件
@@ -116,7 +122,7 @@ public class GroupDetail extends AppCompatActivity implements AdapterView.OnItem
         return true;
     }
 
-    //点击返回按钮返回上一级
+    /*//点击返回按钮返回上一级
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -125,7 +131,7 @@ public class GroupDetail extends AppCompatActivity implements AdapterView.OnItem
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
+    }*/
 
     //获取数据库的数据
     private void getData() {

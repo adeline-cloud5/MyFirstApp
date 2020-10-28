@@ -9,8 +9,9 @@ import androidx.annotation.Nullable;
 
 public class DBOpenHelper extends SQLiteOpenHelper {
 
-    private String CREATE_TABLE1_SQL = "create table notes (id integer primary key autoincrement,title text,time datatime,tag text,detail text)";
-    private String CREATE_TABLE2_SQL = "create table tags (id integer primary key autoincrement,tag text)";
+    private String CREATE_TABLE1_SQL = "create table notes (id integer primary key autoincrement,title text,time datatime,tag text,detail text,username text)";
+    private String CREATE_TABLE2_SQL = "create table tags (id integer primary key autoincrement,tag text,username)";
+    private String CREATE_TABLE3_SQL = "create table users (id integer primary key autoincrement,username text,password text)";
 
     public DBOpenHelper(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, null, version);
@@ -23,6 +24,8 @@ public class DBOpenHelper extends SQLiteOpenHelper {
         Log.i("TAG","-------create--table1------");
         db.execSQL(CREATE_TABLE2_SQL);
         Log.i("TAG","-------create--table2------");
+        db.execSQL(CREATE_TABLE3_SQL);
+        Log.i("TAG","-------create--table3------");
     }
 
     @Override

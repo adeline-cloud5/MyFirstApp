@@ -35,7 +35,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:paddingLeft="5dp"
-        android:text="user"
+        android:text="未登录"
         android:textSize="18sp"
         android:textStyle="bold"
         android:textColor="#3700b3"

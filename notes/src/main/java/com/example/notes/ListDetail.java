@@ -155,7 +155,7 @@ public class ListDetail extends AppCompatActivity implements View.OnClickListene
         builder.create().show();
     }
 
-    //返回刷新标志
+    /*//返回刷新标志
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK){
@@ -164,7 +164,7 @@ public class ListDetail extends AppCompatActivity implements View.OnClickListene
             finish();
         }
         return super.onKeyDown(keyCode, event);
-    }
+    }*/
 
     //保存数据到数据库
     private void saveData(String title,String date,String tag,String detail) {

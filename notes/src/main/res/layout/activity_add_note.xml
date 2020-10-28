@@ -114,33 +114,30 @@
                 android:layout_marginRight="10dp"
                 android:layout_marginLeft="10dp">
 
-                <RadioButton
+                <!--<RadioButton
                     android:id="@+id/tagButton1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
                     android:text="学习" />
-
                 <RadioButton
                     android:id="@+id/tagButton2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
                     android:text="工作" />
-
                 <RadioButton
                     android:id="@+id/tagButton3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
                     android:text="生活" />
-
                 <RadioButton
                     android:id="@+id/tagButton4"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
-                    android:text="默认" />
+                    android:text="默认" />-->
 
             </RadioGroup>
         </LinearLayout>
