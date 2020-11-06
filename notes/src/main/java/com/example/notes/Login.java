@@ -83,9 +83,12 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                 Toast.makeText(getApplicationContext(), "用户不存在！", Toast.LENGTH_SHORT).show();
             }else if(index==1 && pw.equals(str)){
                 //登陆成功
+                //Intent intent = new Intent();
+                Intent intent = getIntent();
+                intent.putExtra("username",username);
+                setResult(2,intent);
+                finish();
                 Toast.makeText(getApplicationContext(), "登录成功！", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(this,MainActivity.class);
-                startActivity(intent);
             }else {
                 Toast.makeText(getApplicationContext(), "用户名或密码错误！", Toast.LENGTH_SHORT).show();
             }

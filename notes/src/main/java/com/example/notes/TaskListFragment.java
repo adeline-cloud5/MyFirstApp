@@ -60,7 +60,8 @@ public class TaskListFragment extends Fragment implements AdapterView.OnItemClic
 
     //获取数据库的数据
     private void getData() {
-        Cursor cursor = dbOpenHelper.getReadableDatabase().query(TB_NOTE,null,null,null,null,null,null);
+        Cursor cursor = dbOpenHelper.getReadableDatabase().query
+                (TB_NOTE,null,null,null,null,null,null);
         Log.i("TAG","---------searching--data---------");
 
         //把查询结果保存到resultList中

@@ -120,18 +120,41 @@ public class TaskGroupFragment extends Fragment implements AdapterView.OnItemCli
 
     //列表长按点击事件监听
     @Override
-    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+    public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("提示")
                 .setMessage("请确认是否删除数据")
                 .setPositiveButton("是", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
+                        Object itemAtPosition = groupList.getItemAtPosition(position);
+                        HashMap<String,String> map = (HashMap<String, String>) itemAtPosition;
+                        String tagName = map.get("tagName");
+                        if(tagName.equals("default")){
+                            Toast.makeText(getActivity(),"默认分类无法删除", Toast.LENGTH_SHORT).show();
+                        }else{
+                            taglist.remove(position);
+                            deleteData(tagName);
+                            //刷新
+                            adapter.notifyDataSetChanged();
+                        }
                     }
                 }).setNegativeButton("否",null);
         builder.create().show();
         return true;
+    }
+
+    //数据库删除数据
+    private void deleteData(String tagName){
+        SQLiteDatabase sqLiteDatabase1 = dbOpenHelperTag.getReadableDatabase();
+        sqLiteDatabase1.delete(TB_TAG,"tag=?",new String[]{tagName});
+        Log.i("TAG","------delete--tag--"+tagName+"-------");
+
+        ContentValues values = new ContentValues();
+        values.put("tag","default");
+        SQLiteDatabase sqLiteDatabase2 = dbOpenHelperNote.getReadableDatabase();
+        sqLiteDatabase2.update(TB_NAME,values,"tag=?",new String[]{tagName});
+        Log.i("TAG","------update--tag--to--default-----");
     }
 
     //获取数据库的数据
@@ -142,7 +165,6 @@ public class TaskGroupFragment extends Fragment implements AdapterView.OnItemCli
         while (cursorTag.moveToNext()){
             tags.add(cursorTag.getString(1));
         }
-        Log.i("TAG",tags.toString());
 
         //根据tag关键字查询便签列表确定每个tag中包含的便签数
         for(int i = 0;i<tags.size();i++){
@@ -159,6 +181,7 @@ public class TaskGroupFragment extends Fragment implements AdapterView.OnItemCli
                 map.put("tagName",tags.get(i));
             }
             map.put("count",""+c);
+            map.put("id",i+"");
             taglist.add(map);
         }
         Log.i("TAG",taglist.toString());
@@ -170,6 +193,7 @@ public class TaskGroupFragment extends Fragment implements AdapterView.OnItemCli
         super.onResume();
         tags = new ArrayList<String>();
         taglist = new ArrayList<Map<String, String>>();
+        //获取数据库中的数据
         getData();
         adapter = new GroupAdapter(getActivity(),R.layout.list_item,taglist);
         groupList.setAdapter(adapter);

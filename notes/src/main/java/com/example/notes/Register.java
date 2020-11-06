@@ -52,7 +52,6 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
                 finish();
             }
         });
-        //deleteData("xiaoming");
         allUsers();
 
     }

@@ -105,16 +105,6 @@ public class ListDetail extends AppCompatActivity implements View.OnClickListene
                         dialog.dismiss();
                     }
                 });
-                /*.setSingleChoiceItems(tags,checkeditem, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        checkeditem = which;
-                        //Toast.makeText(this, "成功加入"+checkeditem+"标签", Toast.LENGTH_SHORT).show();
-                        tagText.setText(tags.get(checkeditem));
-                        Log.i("TAG",tags.get(checkeditem));
-                        dialog.dismiss();
-                    }
-                });*/
         builder.create().show();
     }
 
@@ -154,17 +144,6 @@ public class ListDetail extends AppCompatActivity implements View.OnClickListene
                 .setNeutralButton("取消", null);
         builder.create().show();
     }
-
-    /*//返回刷新标志
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK){
-            Intent intent = new Intent();
-            setResult(RESULT_OK, intent);
-            finish();
-        }
-        return super.onKeyDown(keyCode, event);
-    }*/
 
     //保存数据到数据库
     private void saveData(String title,String date,String tag,String detail) {
@@ -222,7 +201,7 @@ public class ListDetail extends AppCompatActivity implements View.OnClickListene
         }
     }
 
-    //获取数据库的数据
+    //获取Tag数据库的数据
     private void getTagData() {
         Cursor cursor = dbOpenHelperTag.getReadableDatabase().query(TB_TAG,null,null,null,null,null,null);
         while (cursor.moveToNext()){

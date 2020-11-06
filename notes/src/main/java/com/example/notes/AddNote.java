@@ -72,6 +72,7 @@ public class AddNote extends AppCompatActivity implements RadioGroup.OnCheckedCh
 
     //动态添加按钮
     public void addRadioButton(){
+        //获取标签分类数据表
         getTagData();
         int index = 0;
         for(String str:tags){
@@ -80,9 +81,10 @@ public class AddNote extends AppCompatActivity implements RadioGroup.OnCheckedCh
             button.setId(index);
             button.setTextSize(18);
             radioGroup.addView(button);
+            //设置按钮的margin边距
             LinearLayout.LayoutParams layoutParams= (LinearLayout.LayoutParams) button
                     .getLayoutParams();
-            layoutParams.setMargins(0,0,0,10);//4个参数按顺序分别是左上右下
+            layoutParams.setMargins(0,0,0,10);
             button.setLayoutParams(layoutParams);
             index++;
         }
@@ -117,6 +119,7 @@ public class AddNote extends AppCompatActivity implements RadioGroup.OnCheckedCh
 
         String title = addTitle.getText().toString();
         String detail = addDetail.getText().toString();
+        //获取当前时间
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String time = sdf.format(calendar.getTime());
